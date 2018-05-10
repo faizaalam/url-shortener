@@ -24,7 +24,7 @@ app.get('/:url(*)', function(request,response){
   if(valid_url.isUri(passed_url)){
   
   
-    mongo.connct(db_url, function(err, db){
+    mongo.connect(db_url, function(err, db){
       if(err) {
       response.end("error !!!!!");
       console.log(error);
