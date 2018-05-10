@@ -20,15 +20,21 @@ var error = {
 
 app.get('/:url(*)', function(request,response){
   var passed_url = request.params.url;
-  
-  if(valid_url.isUri(passed_url){
+  let newUrl = { url: passed_url, short: shortCode }; 
+  if(valid_url.isUri(passed_url)){
     console.log('Looks like an URI');
     } else {
         console.log('Not a URI');
     }
+  
+  var shortcode = shortid.generate();
+  shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@');
+  
+  
+  collection.insert(newURL);
   result_json.original_url = passed_url;
   
-  
+  response.send("Hello");
   
     
 });
