@@ -7,7 +7,6 @@ var mongo = require("mongodb").MongoClient;
 var valid_url = require("valid-url");
 var shortid = require("shortid");
 var db_url = process.env.MONGO_URL;
-
 var app = express();
 
 var result_json = {
@@ -18,7 +17,7 @@ var error = {
 'error': 'Not a valid url'
 };
 
-app.get('/:url(*)', function(request,response){
+app.get('/new/:url(*)', function(request,response){
   var passed_url = request.params.url;
   
   if(valid_url.isUri(passed_url)){
@@ -38,16 +37,16 @@ app.get('/:url(*)', function(request,response){
         result_json.short_url = 'http://'+request.headers['host'] + "/" + shortcode;
         db.close();
         response.send(result_json);
-      });
-      
-      
-      
+      });     
     });
     } else {
       response.send(error);
-    }
-    
-    
+    }  
+});
+
+app.get('/:short', function(req,res){
+  mongo.connect(db_url, function(err, db){
+  })
 });
 
 
