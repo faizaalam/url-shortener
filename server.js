@@ -25,9 +25,18 @@ app.get("/", function (request, response) {
 });
 
 app.get('/new/:url', function(request,response){
-  result_json.original_url = request.params.url;
-
-    response.send(result_json);
+  var passed_url = request.params.url;
+  if((passed_url.split("://")[0] === "http") || (passed_url.split("//")[0] === "https" )){
+    response.send("valid");
+  }
+  else{
+    response.send(error);
+  }
+  result_json.original_url = passed_url;
+  
+  
+  
+    
 });
 
 
