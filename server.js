@@ -54,8 +54,10 @@ app.get('/:short', function(req,res){
     var url_list=db.collection('links');
     url_list.findOne({"short": short}, {"url": 1, "_id":0}, (err,doc) => {
       if(doc != null){
+        db.close();
       res.redirect(doc.url);
       }else{
+        db.close();
      res.json({ error: "Shortlink not found in the database." });
       }
     });
