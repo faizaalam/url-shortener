@@ -20,29 +20,37 @@ var error = {
 
 app.get('/:url(*)', function(request,response){
   var passed_url = request.params.url;
-  let newUrl = { url: passed_url, short: shortCode }; 
+  
   if(valid_url.isUri(passed_url)){
-    console.log('Looks like an URI');
+  
+  
+    mongo.connct(db_url, function(err, db){
+      if(err) {
+      response.end("error !!!!!");
+      console.log(error);
+      }
+      var url_list=db.collection('links');
+           var shortcode = shortid.generate();
+          shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@');
+      let newUrl = { url: passed_url, short: shortcode }; 
+      url_list.insert([newUrl], function(){
+    result_json.original_url = passed_url;
+        result_json.short_url = 'http://'+request.headers['host'] + "/" + shortcode;
+        db.close();
+        response.send(result_json);
+      });
+      
+      
+      
+    });
     } else {
-        console.log('Not a URI');
+      response.send(error);
     }
-  
-  var shortcode = shortid.generate();
-  shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@');
-  
-  
-  collection.insert(newURL);
-  result_json.original_url = passed_url;
-  
-  response.send("Hello");
-  
+    
     
 });
 
 
-
-
-// listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
