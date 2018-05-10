@@ -45,11 +45,23 @@ app.get('/new/:url(*)', function(request,response){
 });
 
 app.get('/:short', function(req,res){
+  var short = req.params.short;
   mongo.connect(db_url, function(err, db){
-  })
+      if(err) {
+      res.end("error !!!!!");
+      console.log(error);
+      }
+    var url_list=db.collection('links');
+    url_list.findOne({"short": short}, {"url": 1, "_id":0}, (err,doc) => {
+      if(doc != null){
+      res.redirect(doc.url);
+      }else{
+     res.json({ error: "Shortlink not found in the database." });
+      }
+    });
 });
 
-
+});
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
