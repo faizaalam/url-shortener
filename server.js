@@ -3,6 +3,11 @@
 
 // init project
 var express = require('express');
+var mongo = require("mongodb").MongoClient;
+var valid_url = require("valid-url");
+var shortid = require("shortid");
+var db_url = process.env.MONGO_URL;
+
 var app = express();
 
 var result_json = {
@@ -13,25 +18,14 @@ var error = {
 'error': 'Not a valid url'
 };
 
-// we've started you off with Express, 
-// but feel free to use whatever libs or frameworks you'd like through `package.json`.
-
-// http://expressjs.com/en/starter/static-files.html
-app.use(express.static('public'));
-
-// http://expressjs.com/en/starter/basic-routing.html
-app.get("/", function (request, response) {
-  response.sendFile(__dirname + '/views/index.html');
-});
-
-app.get('/new/:url', function(request,response){
+app.get('/:url(*)', function(request,response){
   var passed_url = request.params.url;
-  if((passed_url.split("://")[0] === "http") || (passed_url.split("//")[0] === "https" )){
-    response.send("valid");
-  }
-  else{
-    response.send(error);
-  }
+  
+  if(valid_url.isUri(passed_url){
+    console.log('Looks like an URI');
+    } else {
+        console.log('Not a URI');
+    }
   result_json.original_url = passed_url;
   
   
